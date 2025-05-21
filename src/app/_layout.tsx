@@ -13,6 +13,7 @@ import { Slot } from "expo-router";
 import {View} from "react-native"
 
 import "../../global.css";
+import {QueryClientProvider, QueryClient} from "@tanstack/react-query";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -58,12 +59,16 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const client = new QueryClient();
+
 
   return (
     <GluestackUIProvider mode={colorScheme === "dark" ? "dark" : "light"}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <View className={`flex-1 ${colorScheme === 'dark' ? 'bg-background-50' : 'bg-gray-100'}`}>
-          <Slot />
+          <QueryClientProvider client={client}>
+            <Slot />
+          </QueryClientProvider>
         </View>
       </ThemeProvider>
     </GluestackUIProvider>
